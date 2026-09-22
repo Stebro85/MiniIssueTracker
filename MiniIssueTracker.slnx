@@ -1,2 +1,5 @@
 <Solution>
+  <Folder Name="/src/">
+    <Project Path="src/MiniIssueTracker/MiniIssueTracker.csproj" />
+  </Folder>
 </Solution>
