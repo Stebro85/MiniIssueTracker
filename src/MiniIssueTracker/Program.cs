@@ -1,7 +1,5 @@
 ﻿using MiniIssueTracker.Issues;
 
-Console.WriteLine("Hello, World!");
-
 Issue myFirstIssue = new Issue
 {
     Title = "Login werkt niet",
@@ -20,18 +18,18 @@ Issue mySecondIssue = new Issue
     Status = IssueStatus.InProgress
 }; 
 
-Console.WriteLine(myFirstIssue.Id);
-Console.WriteLine(myFirstIssue.Title);
-Console.WriteLine(myFirstIssue.Description);
-Console.WriteLine(myFirstIssue.Type);
-Console.WriteLine(myFirstIssue.Priority);
-Console.WriteLine(myFirstIssue.Status);
-Console.WriteLine(myFirstIssue.CreatedAt);
+List<Issue> issues = new List<Issue>();
+issues.Add(myFirstIssue);
+issues.Add(mySecondIssue);
+Console.WriteLine(issues.Count);
 
-Console.WriteLine(mySecondIssue.Id);
-Console.WriteLine(mySecondIssue.Title);
-Console.WriteLine(mySecondIssue.Description);
-Console.WriteLine(mySecondIssue.Type);
-Console.WriteLine(mySecondIssue.Priority);
-Console.WriteLine(mySecondIssue.Status);
-Console.WriteLine(mySecondIssue.CreatedAt);
+foreach (Issue issue in issues)
+{
+    Console.WriteLine(issue.Id);
+    Console.WriteLine(issue.Title);
+    Console.WriteLine(issue.Description);
+    Console.WriteLine(issue.Type);
+    Console.WriteLine(issue.Priority);
+    Console.WriteLine(issue.Status);
+    Console.WriteLine(issue.CreatedAt);
+}
