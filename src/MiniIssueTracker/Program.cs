@@ -1,11 +1,99 @@
 ﻿using MiniIssueTracker.Issues;
 
+Console.WriteLine("Geef de titel van het Issue:");
+string? title = Console.ReadLine();
+while (string.IsNullOrWhiteSpace(title))
+{
+    Console.WriteLine("Titel is verplicht");
+    Console.WriteLine("Geef de titel van het Issue:");
+    title = Console.ReadLine();
+}
+
+Console.WriteLine("Geef de beschrijving van het Issue:");
+string? description = Console.ReadLine();
+while (string.IsNullOrWhiteSpace(description))
+{
+    Console.WriteLine("Beschrijving is verplicht");
+    Console.WriteLine("Geef de beschrijving van het Issue:");
+    description = Console.ReadLine();
+}
+
+Console.WriteLine("Kies het type:");
+Console.WriteLine("1. Bug");
+Console.WriteLine("2. Feature");
+Console.WriteLine("3. Task");
+string? typeChoice = Console.ReadLine();
+
+while (typeChoice != "1" &&
+       typeChoice != "2" &&
+       typeChoice != "3")
+{
+    Console.WriteLine("Geen geldige invoer");
+    Console.WriteLine("Geef een geldige invoer: 1. Bug, 2. Feature, 3. Task");
+    typeChoice = Console.ReadLine();
+}
+
+IssueType issueType;
+
+switch (typeChoice)
+{
+    case "1":
+        issueType = IssueType.Bug;
+        break;
+
+    case "2":
+        issueType = IssueType.Feature;
+        break;
+
+    case "3":
+        issueType = IssueType.Task;
+        break;
+
+    default:
+        throw new InvalidOperationException("Onverwachte waarde voor typeChoice.");
+}
+
+Console.WriteLine("Kies de Prioriteit:");
+Console.WriteLine("1. Low");
+Console.WriteLine("2. Medium");
+Console.WriteLine("3. High");
+string? priorityChoice = Console.ReadLine();
+
+while (priorityChoice != "1" &&
+       priorityChoice != "2" && 
+       priorityChoice != "3")
+{
+    Console.WriteLine("Geen geldige invoer");
+    Console.WriteLine("Geef een geldige invoer: 1. Low, 2. Medium, 3. High");
+    priorityChoice = Console.ReadLine();
+}
+
+IssuePriority issuePriority;
+
+switch (priorityChoice)
+{
+    case "1":
+        issuePriority = IssuePriority.Low;
+        break;
+
+    case "2":
+        issuePriority = IssuePriority.Medium;
+        break;
+
+    case "3":
+        issuePriority = IssuePriority.High;
+        break;
+
+    default: 
+        throw new InvalidOperationException("Onverwachte waarde voor priorityChoice.");
+}
+
 Issue myFirstIssue = new Issue
 {
-    Title = "Login werkt niet",
-    Description = "Wanneer ik op de login-knop klik, gebeurt er niets.",
-    Type = IssueType.Bug,
-    Priority = IssuePriority.High,
+    Title = title,
+    Description = description,
+    Type = issueType,
+    Priority = issuePriority,
     Status = IssueStatus.Open
 };
 
