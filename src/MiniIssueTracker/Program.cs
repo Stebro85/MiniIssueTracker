@@ -109,18 +109,63 @@ foreach (Issue issue in issues)
     Console.WriteLine(issue.CreatedAt);
 }
 
-bool issueFound = false;
+Issue? selectedIssue = null;
 
 foreach (Issue issue in issues)
 {
     if (issue.Id == selectedId)
     {
-        issueFound = true;
+        selectedIssue = issue;
         Console.WriteLine(issue.Title);
     }
 }
 
-if (!issueFound)
+if (selectedIssue == null)
 {
     Console.WriteLine("Issue not found.");
+}
+
+if (selectedIssue != null)
+{
+    Console.WriteLine($"Huidige status: {selectedIssue.Status}");
+
+    Console.WriteLine("Kies de nieuwe status:");
+    Console.WriteLine("1. Open");
+    Console.WriteLine("2. InProgress");
+    Console.WriteLine("3. Done");
+
+    string? statusChoice = Console.ReadLine();
+
+    while (statusChoice != "1" &&
+           statusChoice != "2" &&
+           statusChoice != "3")
+    {
+        Console.WriteLine("Geen geldige invoer!");
+        Console.WriteLine("Geef een geldige invoer: 1. Open, 2. InProgress, 3. Done.");
+        statusChoice = Console.ReadLine();
+    }
+
+    IssueStatus issueStatus;
+
+    switch (statusChoice)
+    {
+        case "1":
+            issueStatus = IssueStatus.Open;
+            break;
+
+        case "2":
+            issueStatus = IssueStatus.InProgress;
+            break;
+
+        case "3":
+            issueStatus = IssueStatus.Done;
+            break;
+
+        default:
+            throw new InvalidOperationException("Onverwachte waarde voor statusChoice.");
+    }
+
+    selectedIssue.Status = issueStatus;
+
+    Console.WriteLine($"Nieuwe status: {selectedIssue.Status}");
 }
