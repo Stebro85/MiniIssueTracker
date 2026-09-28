@@ -10,7 +10,7 @@ public class Issue
 
     public required IssueType Type { get; set; }
 
-    public required IssuePriority Priority { get; set; }
+    public IssuePriority Priority { get; set; } = IssuePriority.Medium;
 
     public IssueStatus Status { get; set; } = IssueStatus.Open;
 

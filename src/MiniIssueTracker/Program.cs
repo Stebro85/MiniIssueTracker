@@ -53,47 +53,11 @@ switch (typeChoice)
         throw new InvalidOperationException("Onverwachte waarde voor typeChoice.");
 }
 
-Console.WriteLine("Kies de Prioriteit:");
-Console.WriteLine("1. Low");
-Console.WriteLine("2. Medium");
-Console.WriteLine("3. High");
-string? priorityChoice = Console.ReadLine();
-
-while (priorityChoice != "1" &&
-       priorityChoice != "2" && 
-       priorityChoice != "3")
-{
-    Console.WriteLine("Geen geldige invoer");
-    Console.WriteLine("Geef een geldige invoer: 1. Low, 2. Medium, 3. High");
-    priorityChoice = Console.ReadLine();
-}
-
-IssuePriority issuePriority;
-
-switch (priorityChoice)
-{
-    case "1":
-        issuePriority = IssuePriority.Low;
-        break;
-
-    case "2":
-        issuePriority = IssuePriority.Medium;
-        break;
-
-    case "3":
-        issuePriority = IssuePriority.High;
-        break;
-
-    default: 
-        throw new InvalidOperationException("Onverwachte waarde voor priorityChoice.");
-}
-
 Issue myFirstIssue = new Issue
 {
     Title = title,
     Description = description,
-    Type = issueType,
-    Priority = issuePriority
+    Type = issueType
 };
 
 Issue mySecondIssue = new Issue
