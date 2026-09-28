@@ -53,25 +53,49 @@ switch (typeChoice)
         throw new InvalidOperationException("Onverwachte waarde voor typeChoice.");
 }
 
+int nextId = 1;
+
 Issue myFirstIssue = new Issue
 {
+    Id = nextId,
     Title = title,
     Description = description,
     Type = issueType
 };
 
+nextId = nextId + 1;
+
 Issue mySecondIssue = new Issue
 {
+    Id = nextId,
     Title = "Database fout",
     Description = "De applicatie kan geen verbinding maken met de database.",
     Type = IssueType.Task,
     Priority = IssuePriority.Medium,
     Status = IssueStatus.InProgress
-}; 
+};
+
+nextId = nextId + 1;
 
 List<Issue> issues = new List<Issue>();
 issues.Add(myFirstIssue);
 issues.Add(mySecondIssue);
+
+Console.WriteLine("Geef het Id van het Issue dat je wilt behandelen:");
+
+string? issueIdInput = Console.ReadLine();
+
+bool isValidId = int.TryParse(issueIdInput, out int selectedId);
+
+while (!isValidId)
+{
+    Console.WriteLine("Geen geldig Id.");
+    Console.WriteLine("Geef het Id van het Issue dat je wilt behandelen:");
+    issueIdInput = Console.ReadLine();
+
+    isValidId = int.TryParse(issueIdInput, out selectedId);
+}
+
 Console.WriteLine(issues.Count);
 
 foreach (Issue issue in issues)
@@ -83,4 +107,20 @@ foreach (Issue issue in issues)
     Console.WriteLine(issue.Priority);
     Console.WriteLine(issue.Status);
     Console.WriteLine(issue.CreatedAt);
+}
+
+bool issueFound = false;
+
+foreach (Issue issue in issues)
+{
+    if (issue.Id == selectedId)
+    {
+        issueFound = true;
+        Console.WriteLine(issue.Title);
+    }
+}
+
+if (!issueFound)
+{
+    Console.WriteLine("Issue not found.");
 }
