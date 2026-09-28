@@ -68,131 +68,9 @@ if (selectedIssue == null)
 
 if (selectedIssue != null)
 {
-    Console.WriteLine($"Huidige prioriteit: {selectedIssue.Priority}");
-
-    Console.WriteLine("Kies de nieuwe prioriteit:");
-    Console.WriteLine("1. Low");
-    Console.WriteLine("2. Medium");
-    Console.WriteLine("3. High");
-
-    string? priorityChoice = Console.ReadLine();
-
-    while (priorityChoice != "1" &&
-           priorityChoice != "2" &&
-           priorityChoice != "3")
-    {
-        Console.WriteLine("Geen geldige invoer!");
-        Console.WriteLine("Geef een geldige invoer: 1. Low, 2. Medium, 3. High");
-        priorityChoice = Console.ReadLine();
-    }
-
-    IssuePriority issuePriority;
-
-    switch (priorityChoice)
-    {
-        case "1":
-            issuePriority = IssuePriority.Low;
-            break;
-
-        case "2":
-            issuePriority = IssuePriority.Medium;
-            break;
-
-        case "3":
-            issuePriority = IssuePriority.High;
-            break;
-
-        default:
-            throw new InvalidOperationException("Onverwachte waarde voor priorityChoice.");
-    }
-
-    selectedIssue.Priority = issuePriority;
-
-    Console.WriteLine($"Nieuwe prioriteit: {selectedIssue.Priority}");
-
-    Console.WriteLine($"Huidige status: {selectedIssue.Status}");
-
-    Console.WriteLine("Kies de nieuwe status:");
-    Console.WriteLine("1. Open");
-    Console.WriteLine("2. InProgress");
-    Console.WriteLine("3. Done");
-
-    string? statusChoice = Console.ReadLine();
-
-    while (statusChoice != "1" &&
-           statusChoice != "2" &&
-           statusChoice != "3")
-    {
-        Console.WriteLine("Geen geldige invoer!");
-        Console.WriteLine("Geef een geldige invoer: 1. Open, 2. InProgress, 3. Done.");
-        statusChoice = Console.ReadLine();
-    }
-
-    IssueStatus issueStatus;
-
-    switch (statusChoice)
-    {
-        case "1":
-            issueStatus = IssueStatus.Open;
-            break;
-
-        case "2":
-            issueStatus = IssueStatus.InProgress;
-            break;
-
-        case "3":
-            issueStatus = IssueStatus.Done;
-            break;
-
-        default:
-            throw new InvalidOperationException("Onverwachte waarde voor statusChoice.");
-    }
-
-    selectedIssue.Status = issueStatus;
-
-    Console.WriteLine($"Nieuwe status: {selectedIssue.Status}");
-
-    Console.WriteLine($"Huidig type: {selectedIssue.Type}");
-
-    Console.WriteLine("Kies het nieuwe type:");
-    Console.WriteLine("1. Bug");
-    Console.WriteLine("2. Feature");
-    Console.WriteLine("3. Task");
-
-    string? typeChoice = Console.ReadLine();
-
-    while (typeChoice != "1" &&
-           typeChoice != "2" &&
-           typeChoice != "3")
-    {
-        Console.WriteLine("Geen geldige invoer!");
-        Console.WriteLine("Geef een geldige invoer: 1. Bug, 2. Feature, 3. Task");
-        typeChoice = Console.ReadLine();
-    }
-
-    IssueType issueType;
-
-    switch (typeChoice)
-    {
-        case "1":
-            issueType = IssueType.Bug;
-            break;
-
-        case "2":
-            issueType = IssueType.Feature;
-            break;
-
-        case "3":
-            issueType = IssueType.Task;
-            break;
-
-        default:
-            throw new InvalidOperationException("Onverwachte waarde van typeChoice.");
-    }
-
-    selectedIssue.Type = issueType;
-
-    Console.WriteLine($"Nieuw type: {selectedIssue.Type}");
+    ChangePriority(selectedIssue);
+    ChangeStatus(selectedIssue);
+    ChangeType(selectedIssue);
 }
 
 static Issue CreateIssue(int id)
@@ -261,4 +139,139 @@ static Issue CreateIssue(int id)
     };
 
     return newIssue;
+}
+
+static void ChangePriority(Issue issue)
+{
+    Console.WriteLine($"Huidige prioriteit: {issue.Priority}");
+
+    Console.WriteLine("Kies de nieuwe prioriteit:");
+    Console.WriteLine("1. Low");
+    Console.WriteLine("2. Medium");
+    Console.WriteLine("3. High");
+
+    string? priorityChoice = Console.ReadLine();
+
+    while (priorityChoice != "1" &&
+           priorityChoice != "2" &&
+           priorityChoice != "3")
+    {
+        Console.WriteLine("Geen geldige invoer!");
+        Console.WriteLine("Geef een geldige invoer: 1. Low, 2. Medium, 3. High");
+        priorityChoice = Console.ReadLine();
+    }
+
+    IssuePriority issuePriority;
+
+    switch (priorityChoice)
+    {
+        case "1":
+            issuePriority = IssuePriority.Low;
+            break;
+
+        case "2":
+            issuePriority = IssuePriority.Medium;
+            break;
+
+        case "3":
+            issuePriority = IssuePriority.High;
+            break;
+
+        default:
+            throw new InvalidOperationException("Onverwachte waarde voor priorityChoice.");
+    }
+
+    issue.Priority = issuePriority;
+
+    Console.WriteLine($"Nieuwe prioriteit: {issue.Priority}");
+}
+
+static void ChangeStatus(Issue issue)
+{
+    Console.WriteLine($"Huidige status: {issue.Status}");
+
+    Console.WriteLine("Kies de nieuwe status:");
+    Console.WriteLine("1. Open");
+    Console.WriteLine("2. InProgress");
+    Console.WriteLine("3. Done");
+
+    string? statusChoice = Console.ReadLine();
+
+    while (statusChoice != "1" &&
+           statusChoice != "2" &&
+           statusChoice != "3")
+    {
+        Console.WriteLine("Geen geldige invoer!");
+        Console.WriteLine("Geef een geldige invoer: 1. Open, 2. InProgress, 3. Done.");
+        statusChoice = Console.ReadLine();
+    }
+
+    IssueStatus issueStatus;
+
+    switch (statusChoice)
+    {
+        case "1":
+            issueStatus = IssueStatus.Open;
+            break;
+
+        case "2":
+            issueStatus = IssueStatus.InProgress;
+            break;
+
+        case "3":
+            issueStatus = IssueStatus.Done;
+            break;
+
+        default:
+            throw new InvalidOperationException("Onverwachte waarde voor statusChoice.");
+    }
+
+    issue.Status = issueStatus;
+
+    Console.WriteLine($"Nieuwe status: {issue.Status}");
+}
+
+static void ChangeType(Issue issue)
+{
+    Console.WriteLine($"Huidig type: {issue.Type}");
+
+    Console.WriteLine("Kies het nieuwe type:");
+    Console.WriteLine("1. Bug");
+    Console.WriteLine("2. Feature");
+    Console.WriteLine("3. Task");
+
+    string? typeChoice = Console.ReadLine();
+
+    while (typeChoice != "1" &&
+           typeChoice != "2" &&
+           typeChoice != "3")
+    {
+        Console.WriteLine("Geen geldige invoer!");
+        Console.WriteLine("Geef een geldige invoer: 1. Bug, 2. Feature, 3. Task");
+        typeChoice = Console.ReadLine();
+    }
+
+    IssueType issueType;
+
+    switch (typeChoice)
+    {
+        case "1":
+            issueType = IssueType.Bug;
+            break;
+
+        case "2":
+            issueType = IssueType.Feature;
+            break;
+
+        case "3":
+            issueType = IssueType.Task;
+            break;
+
+        default:
+            throw new InvalidOperationException("Onverwachte waarde van typeChoice.");
+    }
+
+    issue.Type = issueType;
+
+    Console.WriteLine($"Nieuw type: {issue.Type}");
 }
