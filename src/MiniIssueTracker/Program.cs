@@ -68,6 +68,48 @@ if (selectedIssue == null)
 
 if (selectedIssue != null)
 {
+    Console.WriteLine($"Huidige prioriteit: {selectedIssue.Priority}");
+
+    Console.WriteLine("Kies de nieuwe prioriteit:");
+    Console.WriteLine("1. Low");
+    Console.WriteLine("2. Medium");
+    Console.WriteLine("3. High");
+
+    string? priorityChoice = Console.ReadLine();
+
+    while (priorityChoice != "1" &&
+           priorityChoice != "2" &&
+           priorityChoice != "3")
+    {
+        Console.WriteLine("Geen geldige invoer!");
+        Console.WriteLine("Geef een geldige invoer: 1. Low, 2. Medium, 3. High");
+        priorityChoice = Console.ReadLine();
+    }
+
+    IssuePriority issuePriority;
+
+    switch (priorityChoice)
+    {
+        case "1":
+            issuePriority = IssuePriority.Low;
+            break;
+
+        case "2":
+            issuePriority = IssuePriority.Medium;
+            break;
+
+        case "3":
+            issuePriority = IssuePriority.High;
+            break;
+
+        default:
+            throw new InvalidOperationException("Onverwachte waarde voor priorityChoice.");
+    }
+
+    selectedIssue.Priority = issuePriority;
+
+    Console.WriteLine($"Nieuwe prioriteit: {selectedIssue.Priority}");
+
     Console.WriteLine($"Huidige status: {selectedIssue.Status}");
 
     Console.WriteLine("Kies de nieuwe status:");
