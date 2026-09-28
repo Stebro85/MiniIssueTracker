@@ -1,67 +1,8 @@
 ﻿using MiniIssueTracker.Issues;
 
-Console.WriteLine("Geef de titel van het Issue:");
-string? title = Console.ReadLine();
-while (string.IsNullOrWhiteSpace(title))
-{
-    Console.WriteLine("Titel is verplicht");
-    Console.WriteLine("Geef de titel van het Issue:");
-    title = Console.ReadLine();
-}
-
-Console.WriteLine("Geef de beschrijving van het Issue:");
-string? description = Console.ReadLine();
-while (string.IsNullOrWhiteSpace(description))
-{
-    Console.WriteLine("Beschrijving is verplicht");
-    Console.WriteLine("Geef de beschrijving van het Issue:");
-    description = Console.ReadLine();
-}
-
-Console.WriteLine("Kies het type:");
-Console.WriteLine("1. Bug");
-Console.WriteLine("2. Feature");
-Console.WriteLine("3. Task");
-string? typeChoice = Console.ReadLine();
-
-while (typeChoice != "1" &&
-       typeChoice != "2" &&
-       typeChoice != "3")
-{
-    Console.WriteLine("Geen geldige invoer");
-    Console.WriteLine("Geef een geldige invoer: 1. Bug, 2. Feature, 3. Task");
-    typeChoice = Console.ReadLine();
-}
-
-IssueType issueType;
-
-switch (typeChoice)
-{
-    case "1":
-        issueType = IssueType.Bug;
-        break;
-
-    case "2":
-        issueType = IssueType.Feature;
-        break;
-
-    case "3":
-        issueType = IssueType.Task;
-        break;
-
-    default:
-        throw new InvalidOperationException("Onverwachte waarde voor typeChoice.");
-}
-
 int nextId = 1;
 
-Issue myFirstIssue = new Issue
-{
-    Id = nextId,
-    Title = title,
-    Description = description,
-    Type = issueType
-};
+Issue myFirstIssue = CreateIssue(nextId);
 
 nextId = nextId + 1;
 
@@ -168,4 +109,72 @@ if (selectedIssue != null)
     selectedIssue.Status = issueStatus;
 
     Console.WriteLine($"Nieuwe status: {selectedIssue.Status}");
+}
+
+static Issue CreateIssue(int id)
+{
+    Console.WriteLine("Geef de titel van het Issue:");
+    string? title = Console.ReadLine();
+
+    while (string.IsNullOrWhiteSpace(title))
+    {
+        Console.WriteLine("Titel is verplicht");
+        Console.WriteLine("Geef de titel van het Issue:");
+        title = Console.ReadLine();
+    }
+
+    Console.WriteLine("Geef de beschrijving van het Issue:");
+    string? description = Console.ReadLine();
+
+    while (string.IsNullOrWhiteSpace(description))
+    {
+        Console.WriteLine("Beschrijving is verplicht");
+        Console.WriteLine("Geef de beschrijving van het Issue:");
+        description = Console.ReadLine();
+    }
+
+    Console.WriteLine("Kies het type:");
+    Console.WriteLine("1. Bug");
+    Console.WriteLine("2. Feature");
+    Console.WriteLine("3. Task");
+    string? typeChoice = Console.ReadLine();
+
+    while (typeChoice != "1" &&
+           typeChoice != "2" &&
+           typeChoice != "3")
+    {
+        Console.WriteLine("Geen geldige invoer");
+        Console.WriteLine("Geef een geldige invoer: 1. Bug, 2. Feature, 3. Task");
+        typeChoice = Console.ReadLine();
+    }
+
+    IssueType issueType;
+
+    switch (typeChoice)
+    {
+        case "1":
+            issueType = IssueType.Bug;
+            break;
+
+        case "2":
+            issueType = IssueType.Feature;
+            break;
+
+        case "3":
+            issueType = IssueType.Task;
+            break;
+
+        default:
+            throw new InvalidOperationException("Onverwachte waarde voor typeChoice.");
+    }
+
+    Issue newIssue = new Issue
+    {
+        Id = id,
+        Title = title,
+        Description = description,
+        Type = issueType
+    };
+
+    return newIssue;
 }
