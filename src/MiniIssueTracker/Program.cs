@@ -151,6 +151,48 @@ if (selectedIssue != null)
     selectedIssue.Status = issueStatus;
 
     Console.WriteLine($"Nieuwe status: {selectedIssue.Status}");
+
+    Console.WriteLine($"Huidig type: {selectedIssue.Type}");
+
+    Console.WriteLine("Kies het nieuwe type:");
+    Console.WriteLine("1. Bug");
+    Console.WriteLine("2. Feature");
+    Console.WriteLine("3. Task");
+
+    string? typeChoice = Console.ReadLine();
+
+    while (typeChoice != "1" &&
+           typeChoice != "2" &&
+           typeChoice != "3")
+    {
+        Console.WriteLine("Geen geldige invoer!");
+        Console.WriteLine("Geef een geldige invoer: 1. Bug, 2. Feature, 3. Task");
+        typeChoice = Console.ReadLine();
+    }
+
+    IssueType issueType;
+
+    switch (typeChoice)
+    {
+        case "1":
+            issueType = IssueType.Bug;
+            break;
+
+        case "2":
+            issueType = IssueType.Feature;
+            break;
+
+        case "3":
+            issueType = IssueType.Task;
+            break;
+
+        default:
+            throw new InvalidOperationException("Onverwachte waarde van typeChoice.");
+    }
+
+    selectedIssue.Type = issueType;
+
+    Console.WriteLine($"Nieuw type: {selectedIssue.Type}");
 }
 
 static Issue CreateIssue(int id)
