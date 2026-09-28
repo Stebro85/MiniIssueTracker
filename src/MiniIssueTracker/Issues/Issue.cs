@@ -12,7 +12,7 @@ public class Issue
 
     public required IssuePriority Priority { get; set; }
 
-    public required IssueStatus Status { get; set; }
+    public IssueStatus Status { get; set; } = IssueStatus.Open;
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

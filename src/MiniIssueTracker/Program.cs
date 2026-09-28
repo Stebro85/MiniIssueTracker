@@ -93,8 +93,7 @@ Issue myFirstIssue = new Issue
     Title = title,
     Description = description,
     Type = issueType,
-    Priority = issuePriority,
-    Status = IssueStatus.Open
+    Priority = issuePriority
 };
 
 Issue mySecondIssue = new Issue
