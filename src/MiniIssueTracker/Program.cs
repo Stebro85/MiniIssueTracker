@@ -68,9 +68,41 @@ if (selectedIssue == null)
 
 if (selectedIssue != null)
 {
-    ChangePriority(selectedIssue);
-    ChangeStatus(selectedIssue);
-    ChangeType(selectedIssue);
+    Console.WriteLine("Wat wil je aanpassen?");
+    Console.WriteLine("1. Prioriteit");
+    Console.WriteLine("2. Status");
+    Console.WriteLine("3. Type");
+    Console.WriteLine("4. Terug");
+
+    string? actionChoice = Console.ReadLine();
+
+    while (actionChoice != "1" &&
+           actionChoice != "2" &&
+           actionChoice != "3" &&
+           actionChoice != "4")
+    {
+        Console.WriteLine("Geen geldige invoer");
+        Console.WriteLine("Geef een geldige invoer: 1. Prioriteit, 2. Status, 3. Type, 4. Terug");
+        actionChoice = Console.ReadLine();
+    }
+
+    switch (actionChoice)
+    {
+        case "1":
+            ChangePriority(selectedIssue);
+            break;
+
+        case "2":
+            ChangeStatus(selectedIssue);
+            break;
+
+        case "3":
+            ChangeType(selectedIssue);
+            break;
+
+        case "4":
+            break;
+    }
 }
 
 static Issue CreateIssue(int id)
