@@ -9,12 +9,19 @@ building an issue tracker step by step.
 
 The project is currently under active development. Features, structure, and documentation will evolve as the project progresses.
 
-## Current Focus
+## Current Features
 
-- Creating issues
-- Issue types
-- Issue priorities
-- Issue statuses
-- Basic input validation
+- Create issues with a title, description, and type
+- View all issues
+- Edit open issues
+- Delete open issues
+- Update issue type, priority, and status
+- Validate user input
+- Find issues by their ID
 
-More functionality will be added incrementally.
+## Technologies
+
+- C#
+- .NET 10
+- .NET Console Application
+- Git and GitHub
