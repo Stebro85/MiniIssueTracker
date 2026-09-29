@@ -58,21 +58,7 @@ while (mainMenuChoice != "6")
             }
             else
             {
-                Console.WriteLine("Geef het Id van het issue dat je wilt bewerken:");
-
-                string? issueIdInput = Console.ReadLine();
-
-                bool isValidId = int.TryParse(issueIdInput, out int selectedId);
-
-                while (!isValidId)
-                {
-                    Console.WriteLine("Geen geldig Id.");
-                    Console.WriteLine("Geef het Id van het issue dat je wilt bewerken:");
-
-                    issueIdInput = Console.ReadLine();
-
-                    isValidId = int.TryParse(issueIdInput, out selectedId);
-                }
+                int selectedId = ReadIssueId("Geef het Id van het issue dat je wilt bewerken:");
 
                 Issue? selectedIssue = FindIssueById(issues, selectedId);
 
@@ -160,21 +146,7 @@ while (mainMenuChoice != "6")
             }
             else
             {
-                Console.WriteLine("Geef het Id van het issue dat je wilt verwijderen:");
-
-                string? issueIdInput = Console.ReadLine();
-
-                bool isValidId = int.TryParse(issueIdInput, out int selectedId);
-
-                while (!isValidId)
-                {
-                    Console.WriteLine("Geen geldig Id.");
-                    Console.WriteLine("Geef het Id van het issue dat je wilt verwijderen:");
-
-                    issueIdInput = Console.ReadLine();
-
-                    isValidId = int.TryParse(issueIdInput, out selectedId);
-                }
+                int selectedId = ReadIssueId("Geef het Id van het issue dat je wilt verwijderen:");
 
                 Issue? selectedIssue = FindIssueById(issues, selectedId);
 
@@ -205,20 +177,7 @@ while (mainMenuChoice != "6")
             else
             {
                 // Lees en valideer het Id van het Issue dat behandeld moet worden.
-                Console.WriteLine("Geef het Id van het Issue dat je wilt behandelen:");
-
-                string? issueIdInput = Console.ReadLine();
-
-                bool isValidId = int.TryParse(issueIdInput, out int selectedId);
-
-                while (!isValidId)
-                {
-                    Console.WriteLine("Geen geldig Id.");
-                    Console.WriteLine("Geef het Id van het Issue dat je wilt behandelen:");
-                    issueIdInput = Console.ReadLine();
-
-                    isValidId = int.TryParse(issueIdInput, out selectedId);
-                }
+                int selectedId = ReadIssueId("Geef het Id van het Issue dat je wilt behandelen:");
 
                 // Zoek het Issue met het gekozen Id.
                 Issue? selectedIssue = FindIssueById(issues, selectedId);
@@ -497,4 +456,25 @@ static Issue? FindIssueById(List<Issue> issues, int selectedId)
     }
 
     return selectedIssue;
+}
+
+static int ReadIssueId(string prompt)
+{
+    Console.WriteLine(prompt);
+
+    string? issueIdInput = Console.ReadLine();
+
+    bool isValidId = int.TryParse(issueIdInput, out int selectedId);
+
+    while (!isValidId)
+    {
+        Console.WriteLine("Geen geldig Id.");
+        Console.WriteLine(prompt);
+
+        issueIdInput = Console.ReadLine();
+
+        isValidId = int.TryParse(issueIdInput, out selectedId);
+    }
+
+    return selectedId;
 }
