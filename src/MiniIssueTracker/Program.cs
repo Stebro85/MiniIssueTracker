@@ -7,13 +7,15 @@ int nextId = 1;
 List<Issue> issues = new List<Issue>();
 
 // Blijf het hoofdmenu tonen totdat de gebruiker kiest om af te sluiten.
-while (mainMenuChoice != "4")
+while (mainMenuChoice != "6")
 {
     // 1. Menu tonen
     Console.WriteLine("1. Issue aanmaken");
     Console.WriteLine("2. Issues bekijken");
-    Console.WriteLine("3. Issue behandelen");
-    Console.WriteLine("4. Afsluiten");
+    Console.WriteLine("3. Issue bewerken");
+    Console.WriteLine("4. Issue verwijderen");
+    Console.WriteLine("5. Issue behandelen");
+    Console.WriteLine("6. Afsluiten");
 
     // 2. Keuze lezen
     mainMenuChoice = Console.ReadLine();
@@ -50,6 +52,168 @@ while (mainMenuChoice != "4")
             break;
 
         case "3":
+            if (issues.Count == 0)
+            {
+                Console.WriteLine("Er zijn nog geen issues om te bewerken.");
+            }
+            else
+            {
+                Console.WriteLine("Geef het Id van het issue dat je wilt bewerken:");
+
+                string? issueIdInput = Console.ReadLine();
+
+                bool isValidId = int.TryParse(issueIdInput, out int selectedId);
+
+                while (!isValidId)
+                {
+                    Console.WriteLine("Geen geldig Id.");
+                    Console.WriteLine("Geef het Id van het issue dat je wilt bewerken:");
+
+                    issueIdInput = Console.ReadLine();
+
+                    isValidId = int.TryParse(issueIdInput, out selectedId);
+                }
+
+                Issue? selectedIssue = null;
+
+                foreach (Issue issue in issues)
+                {
+                    if (issue.Id == selectedId)
+                    {
+                        selectedIssue = issue;
+                    }
+                }
+
+                if (selectedIssue == null)
+                {
+                    Console.WriteLine("Issue niet gevonden.");
+                }
+                else
+                {
+                    if (selectedIssue.Status != IssueStatus.Open)
+                    {
+                        Console.WriteLine("Dit issue kan niet meer bewerkt worden omdat het al in behandeling is.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Wat wil je bewerken?");
+                        Console.WriteLine("1. Titel");
+                        Console.WriteLine("2. Beschrijving");
+                        Console.WriteLine("3. Type");
+                        Console.WriteLine("4. Terug");
+
+                        string? editChoice = Console.ReadLine();
+
+                        while (editChoice != "1" &&
+                               editChoice != "2" &&
+                               editChoice != "3" &&
+                               editChoice != "4")
+                        {
+                            Console.WriteLine("Geen geldige invoer.");
+                            Console.WriteLine("Geef een geldige invoer: 1. Titel, 2. Beschrijving, 3. Type, 4. Terug");
+
+                            editChoice = Console.ReadLine();
+                        }
+
+                        switch (editChoice)
+                        {
+                            case "1":
+                                Console.WriteLine("Geef de nieuwe titel:");
+                                string? newTitle = Console.ReadLine();
+
+                                while (string.IsNullOrWhiteSpace(newTitle))
+                                {
+                                    Console.WriteLine("Titel is verplicht.");
+                                    Console.WriteLine("Geef de nieuwe titel:");
+
+                                    newTitle = Console.ReadLine();
+                                }
+
+                                selectedIssue.Title = newTitle;
+                                Console.WriteLine($"Nieuwe titel: {selectedIssue.Title}");
+                                break;
+
+                            case "2":
+                                Console.WriteLine("Geef de nieuwe beschrijving:");
+                                string? newDescription = Console.ReadLine();
+
+                                while (string.IsNullOrWhiteSpace(newDescription))
+                                {
+                                    Console.WriteLine("Beschrijving is verplicht.");
+                                    Console.WriteLine("Geef de nieuwe beschrijving:");
+
+                                    newDescription = Console.ReadLine();
+                                }
+
+                                selectedIssue.Description = newDescription;
+                                Console.WriteLine($"Nieuwe beschrijving: {selectedIssue.Description}");
+                                break;
+
+                            case "3":
+                                ChangeType(selectedIssue);
+                                break;
+
+                            case "4":
+                                break;
+                        }
+                    }
+                }
+            }
+            break;
+
+        case "4":
+            if (issues.Count == 0)
+            {
+                Console.WriteLine("Er zijn nog geen issues om te verwijderen.");
+            }
+            else
+            {
+                Console.WriteLine("Geef het Id van het issue dat je wilt verwijderen:");
+
+                string? issueIdInput = Console.ReadLine();
+
+                bool isValidId = int.TryParse(issueIdInput, out int selectedId);
+
+                while (!isValidId)
+                {
+                    Console.WriteLine("Geen geldig Id.");
+                    Console.WriteLine("Geef het Id van het issue dat je wilt verwijderen:");
+
+                    issueIdInput = Console.ReadLine();
+
+                    isValidId = int.TryParse(issueIdInput, out selectedId);
+                }
+
+                Issue? selectedIssue = null;
+
+                foreach (Issue issue in issues)
+                {
+                    if (issue.Id == selectedId)
+                    {
+                        selectedIssue = issue;
+                    }
+                }
+
+                if (selectedIssue == null)
+                {
+                    Console.WriteLine("Issue niet gevonden.");
+                }
+                else
+                {
+                    if (selectedIssue.Status != IssueStatus.Open)
+                    {
+                        Console.WriteLine("Dit issue kan niet meer verwijderd worden omdat het al in behandeling is.");
+                    }
+                    else
+                    {
+                        issues.Remove(selectedIssue);
+                        Console.WriteLine("Issue verwijderd.");
+                    }
+                }
+            }
+            break;
+
+        case "5":
             if (issues.Count == 0)
             {
                 Console.WriteLine("Er zijn nog geen issues om te behandelen.");
@@ -131,7 +295,7 @@ while (mainMenuChoice != "4")
             }
             break;
 
-        case "4":
+        case "6":
             break;
 
         default:
