@@ -74,15 +74,7 @@ while (mainMenuChoice != "6")
                     isValidId = int.TryParse(issueIdInput, out selectedId);
                 }
 
-                Issue? selectedIssue = null;
-
-                foreach (Issue issue in issues)
-                {
-                    if (issue.Id == selectedId)
-                    {
-                        selectedIssue = issue;
-                    }
-                }
+                Issue? selectedIssue = FindIssueById(issues, selectedId);
 
                 if (selectedIssue == null)
                 {
@@ -184,15 +176,7 @@ while (mainMenuChoice != "6")
                     isValidId = int.TryParse(issueIdInput, out selectedId);
                 }
 
-                Issue? selectedIssue = null;
-
-                foreach (Issue issue in issues)
-                {
-                    if (issue.Id == selectedId)
-                    {
-                        selectedIssue = issue;
-                    }
-                }
+                Issue? selectedIssue = FindIssueById(issues, selectedId);
 
                 if (selectedIssue == null)
                 {
@@ -237,16 +221,7 @@ while (mainMenuChoice != "6")
                 }
 
                 // Zoek het Issue met het gekozen Id.
-                Issue? selectedIssue = null;
-
-                foreach (Issue issue in issues)
-                {
-                    if (issue.Id == selectedId)
-                    {
-                        selectedIssue = issue;
-                        Console.WriteLine(issue.Title);
-                    }
-                }
+                Issue? selectedIssue = FindIssueById(issues, selectedId);
 
                 if (selectedIssue == null)
                 {
@@ -256,6 +231,8 @@ while (mainMenuChoice != "6")
                 // Toon de mogelijke aanpassingen voor het gevonden Issue.
                 if (selectedIssue != null)
                 {
+                    Console.WriteLine(selectedIssue.Title);
+
                     Console.WriteLine("Wat wil je aanpassen?");
                     Console.WriteLine("1. Prioriteit");
                     Console.WriteLine("2. Status");
@@ -505,4 +482,19 @@ static void ChangeType(Issue issue)
     issue.Type = issueType;
 
     Console.WriteLine($"Nieuw type: {issue.Type}");
+}
+
+static Issue? FindIssueById(List<Issue> issues, int selectedId)
+{
+    Issue? selectedIssue = null;
+
+    foreach (Issue issue in issues)
+    {
+        if (issue.Id == selectedId)
+        {
+            selectedIssue = issue;
+        }
+    }
+
+    return selectedIssue;
 }
