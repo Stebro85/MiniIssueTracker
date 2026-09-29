@@ -1,106 +1,141 @@
 ﻿using MiniIssueTracker.Issues;
 
+string? mainMenuChoice = null;
+
 int nextId = 1;
 
-Issue myFirstIssue = CreateIssue(nextId);
-
-nextId = nextId + 1;
-
-Issue mySecondIssue = new Issue
-{
-    Id = nextId,
-    Title = "Database fout",
-    Description = "De applicatie kan geen verbinding maken met de database.",
-    Type = IssueType.Task,
-    Priority = IssuePriority.Medium,
-    Status = IssueStatus.InProgress
-};
-
-nextId = nextId + 1;
-
 List<Issue> issues = new List<Issue>();
-issues.Add(myFirstIssue);
-issues.Add(mySecondIssue);
 
-Console.WriteLine("Geef het Id van het Issue dat je wilt behandelen:");
-
-string? issueIdInput = Console.ReadLine();
-
-bool isValidId = int.TryParse(issueIdInput, out int selectedId);
-
-while (!isValidId)
+// Blijf het hoofdmenu tonen totdat de gebruiker kiest om af te sluiten.
+while (mainMenuChoice != "4")
 {
-    Console.WriteLine("Geen geldig Id.");
-    Console.WriteLine("Geef het Id van het Issue dat je wilt behandelen:");
-    issueIdInput = Console.ReadLine();
+    // 1. Menu tonen
+    Console.WriteLine("1. Issue aanmaken");
+    Console.WriteLine("2. Issues bekijken");
+    Console.WriteLine("3. Issue behandelen");
+    Console.WriteLine("4. Afsluiten");
 
-    isValidId = int.TryParse(issueIdInput, out selectedId);
-}
+    // 2. Keuze lezen
+    mainMenuChoice = Console.ReadLine();
 
-Console.WriteLine(issues.Count);
-
-foreach (Issue issue in issues)
-{
-    Console.WriteLine(issue.Id);
-    Console.WriteLine(issue.Title);
-    Console.WriteLine(issue.Description);
-    Console.WriteLine(issue.Type);
-    Console.WriteLine(issue.Priority);
-    Console.WriteLine(issue.Status);
-    Console.WriteLine(issue.CreatedAt);
-}
-
-Issue? selectedIssue = null;
-
-foreach (Issue issue in issues)
-{
-    if (issue.Id == selectedId)
-    {
-        selectedIssue = issue;
-        Console.WriteLine(issue.Title);
-    }
-}
-
-if (selectedIssue == null)
-{
-    Console.WriteLine("Issue not found.");
-}
-
-if (selectedIssue != null)
-{
-    Console.WriteLine("Wat wil je aanpassen?");
-    Console.WriteLine("1. Prioriteit");
-    Console.WriteLine("2. Status");
-    Console.WriteLine("3. Type");
-    Console.WriteLine("4. Terug");
-
-    string? actionChoice = Console.ReadLine();
-
-    while (actionChoice != "1" &&
-           actionChoice != "2" &&
-           actionChoice != "3" &&
-           actionChoice != "4")
-    {
-        Console.WriteLine("Geen geldige invoer");
-        Console.WriteLine("Geef een geldige invoer: 1. Prioriteit, 2. Status, 3. Type, 4. Terug");
-        actionChoice = Console.ReadLine();
-    }
-
-    switch (actionChoice)
+    // 3. Keuze verwerken
+    switch (mainMenuChoice)
     {
         case "1":
-            ChangePriority(selectedIssue);
+            Issue newIssue = CreateIssue(nextId);
+            issues.Add(newIssue);
+            nextId = nextId + 1;
             break;
 
         case "2":
-            ChangeStatus(selectedIssue);
+            if (issues.Count == 0)
+            {
+                Console.WriteLine("Er zijn nog geen issues.");
+            }
+            else
+            {
+                Console.WriteLine($"Aantal issues: {issues.Count}");
+
+                foreach (Issue issue in issues)
+                {
+                    Console.WriteLine(issue.Id);
+                    Console.WriteLine(issue.Title);
+                    Console.WriteLine(issue.Description);
+                    Console.WriteLine(issue.Type);
+                    Console.WriteLine(issue.Priority);
+                    Console.WriteLine(issue.Status);
+                    Console.WriteLine(issue.CreatedAt);
+                }
+            }
             break;
 
         case "3":
-            ChangeType(selectedIssue);
+            if (issues.Count == 0)
+            {
+                Console.WriteLine("Er zijn nog geen issues om te behandelen.");
+            }
+            else
+            {
+                // Lees en valideer het Id van het Issue dat behandeld moet worden.
+                Console.WriteLine("Geef het Id van het Issue dat je wilt behandelen:");
+
+                string? issueIdInput = Console.ReadLine();
+
+                bool isValidId = int.TryParse(issueIdInput, out int selectedId);
+
+                while (!isValidId)
+                {
+                    Console.WriteLine("Geen geldig Id.");
+                    Console.WriteLine("Geef het Id van het Issue dat je wilt behandelen:");
+                    issueIdInput = Console.ReadLine();
+
+                    isValidId = int.TryParse(issueIdInput, out selectedId);
+                }
+
+                // Zoek het Issue met het gekozen Id.
+                Issue? selectedIssue = null;
+
+                foreach (Issue issue in issues)
+                {
+                    if (issue.Id == selectedId)
+                    {
+                        selectedIssue = issue;
+                        Console.WriteLine(issue.Title);
+                    }
+                }
+
+                if (selectedIssue == null)
+                {
+                    Console.WriteLine("Issue niet gevonden.");
+                }
+
+                // Toon de mogelijke aanpassingen voor het gevonden Issue.
+                if (selectedIssue != null)
+                {
+                    Console.WriteLine("Wat wil je aanpassen?");
+                    Console.WriteLine("1. Prioriteit");
+                    Console.WriteLine("2. Status");
+                    Console.WriteLine("3. Type");
+                    Console.WriteLine("4. Terug");
+
+                    string? actionChoice = Console.ReadLine();
+
+                    while (actionChoice != "1" &&
+                        actionChoice != "2" &&
+                        actionChoice != "3" &&
+                        actionChoice != "4")
+                    {
+                        Console.WriteLine("Geen geldige invoer");
+                        Console.WriteLine("Geef een geldige invoer: 1. Prioriteit, 2. Status, 3. Type, 4. Terug");
+                        actionChoice = Console.ReadLine();
+                    }
+
+                    switch (actionChoice)
+                    {
+                        case "1":
+                            ChangePriority(selectedIssue);
+                            break;
+
+                        case "2":
+                            ChangeStatus(selectedIssue);
+                            break;
+
+                        case "3":
+                            ChangeType(selectedIssue);
+                            break;
+
+                        case "4":
+                            break;
+                    }
+                }
+            }
             break;
 
         case "4":
+            break;
+
+        default:
+            Console.WriteLine("Geen geldige keuze.");
             break;
     }
 }
