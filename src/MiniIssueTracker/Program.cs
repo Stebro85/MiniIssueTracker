@@ -1,10 +1,15 @@
 ﻿using MiniIssueTracker.Issues;
+using Microsoft.EntityFrameworkCore;
+using MiniIssueTracker.Data;
+
+string databasePath = Path.Combine("src", "MiniIssueTracker", "Data", "miniissuetracker.db");
+DbContextOptionsBuilder<IssueTrackerDbContext> optionsBuilder = new();
+optionsBuilder.UseSqlite($"Data Source={databasePath}");
+DbContextOptions<IssueTrackerDbContext> options = optionsBuilder.Options;
+
+IssueTrackerDbContext dbContext = new IssueTrackerDbContext(options);
 
 string? mainMenuChoice = null;
-
-int nextId = 1;
-
-List<Issue> issues = new List<Issue>();
 
 // Blijf het hoofdmenu tonen totdat de gebruiker kiest om af te sluiten.
 while (mainMenuChoice != "6")
@@ -24,21 +29,25 @@ while (mainMenuChoice != "6")
     switch (mainMenuChoice)
     {
         case "1":
-            Issue newIssue = CreateIssue(nextId);
-            issues.Add(newIssue);
-            nextId = nextId + 1;
+            Issue newIssue = CreateIssue();
+            dbContext.Issues.Add(newIssue);
+            dbContext.SaveChanges();
+
+            Console.WriteLine($"Issue opgeslagen met Id: {newIssue.Id}");
             break;
 
         case "2":
-            if (issues.Count == 0)
+            List<Issue> storedIssues = dbContext.Issues.ToList();
+
+            if (storedIssues.Count == 0)
             {
                 Console.WriteLine("Er zijn nog geen issues.");
             }
             else
             {
-                Console.WriteLine($"Aantal issues: {issues.Count}");
+                Console.WriteLine($"Aantal issues: {storedIssues.Count}");
 
-                foreach (Issue issue in issues)
+                foreach (Issue issue in storedIssues)
                 {
                     Console.WriteLine(issue.Id);
                     Console.WriteLine(issue.Title);
@@ -52,7 +61,7 @@ while (mainMenuChoice != "6")
             break;
 
         case "3":
-            if (issues.Count == 0)
+            if (!dbContext.Issues.Any())
             {
                 Console.WriteLine("Er zijn nog geen issues om te bewerken.");
             }
@@ -60,7 +69,7 @@ while (mainMenuChoice != "6")
             {
                 int selectedId = ReadIssueId("Geef het Id van het issue dat je wilt bewerken:");
 
-                Issue? selectedIssue = FindIssueById(issues, selectedId);
+                Issue? selectedIssue = FindIssueById(dbContext, selectedId);
 
                 if (selectedIssue == null)
                 {
@@ -108,6 +117,7 @@ while (mainMenuChoice != "6")
                                 }
 
                                 selectedIssue.Title = newTitle;
+                                dbContext.SaveChanges();
                                 Console.WriteLine($"Nieuwe titel: {selectedIssue.Title}");
                                 break;
 
@@ -124,11 +134,13 @@ while (mainMenuChoice != "6")
                                 }
 
                                 selectedIssue.Description = newDescription;
+                                dbContext.SaveChanges();
                                 Console.WriteLine($"Nieuwe beschrijving: {selectedIssue.Description}");
                                 break;
 
                             case "3":
                                 ChangeType(selectedIssue);
+                                dbContext.SaveChanges();
                                 break;
 
                             case "4":
@@ -140,7 +152,7 @@ while (mainMenuChoice != "6")
             break;
 
         case "4":
-            if (issues.Count == 0)
+            if (!dbContext.Issues.Any())
             {
                 Console.WriteLine("Er zijn nog geen issues om te verwijderen.");
             }
@@ -148,7 +160,7 @@ while (mainMenuChoice != "6")
             {
                 int selectedId = ReadIssueId("Geef het Id van het issue dat je wilt verwijderen:");
 
-                Issue? selectedIssue = FindIssueById(issues, selectedId);
+                Issue? selectedIssue = FindIssueById(dbContext, selectedId);
 
                 if (selectedIssue == null)
                 {
@@ -162,7 +174,8 @@ while (mainMenuChoice != "6")
                     }
                     else
                     {
-                        issues.Remove(selectedIssue);
+                        dbContext.Issues.Remove(selectedIssue);
+                        dbContext.SaveChanges();
                         Console.WriteLine("Issue verwijderd.");
                     }
                 }
@@ -170,7 +183,7 @@ while (mainMenuChoice != "6")
             break;
 
         case "5":
-            if (issues.Count == 0)
+            if (!dbContext.Issues.Any())
             {
                 Console.WriteLine("Er zijn nog geen issues om te behandelen.");
             }
@@ -180,7 +193,7 @@ while (mainMenuChoice != "6")
                 int selectedId = ReadIssueId("Geef het Id van het Issue dat je wilt behandelen:");
 
                 // Zoek het Issue met het gekozen Id.
-                Issue? selectedIssue = FindIssueById(issues, selectedId);
+                Issue? selectedIssue = FindIssueById(dbContext, selectedId);
 
                 if (selectedIssue == null)
                 {
@@ -214,14 +227,17 @@ while (mainMenuChoice != "6")
                     {
                         case "1":
                             ChangePriority(selectedIssue);
+                            dbContext.SaveChanges();
                             break;
 
                         case "2":
                             ChangeStatus(selectedIssue);
+                            dbContext.SaveChanges();
                             break;
 
                         case "3":
                             ChangeType(selectedIssue);
+                            dbContext.SaveChanges();
                             break;
 
                         case "4":
@@ -240,7 +256,7 @@ while (mainMenuChoice != "6")
     }
 }
 
-static Issue CreateIssue(int id)
+static Issue CreateIssue()
 {
     Console.WriteLine("Geef de titel van het Issue:");
     string? title = Console.ReadLine();
@@ -299,7 +315,6 @@ static Issue CreateIssue(int id)
 
     Issue newIssue = new Issue
     {
-        Id = id,
         Title = title,
         Description = description,
         Type = issueType
@@ -443,17 +458,9 @@ static void ChangeType(Issue issue)
     Console.WriteLine($"Nieuw type: {issue.Type}");
 }
 
-static Issue? FindIssueById(List<Issue> issues, int selectedId)
+static Issue? FindIssueById(IssueTrackerDbContext dbContext, int selectedId)
 {
-    Issue? selectedIssue = null;
-
-    foreach (Issue issue in issues)
-    {
-        if (issue.Id == selectedId)
-        {
-            selectedIssue = issue;
-        }
-    }
+    Issue? selectedIssue = dbContext.Issues.Find(selectedId);
 
     return selectedIssue;
 }
