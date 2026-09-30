@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/MiniIssueTracker.Api/MiniIssueTracker.Api.csproj" />
     <Project Path="src/MiniIssueTracker/MiniIssueTracker.csproj" />
   </Folder>
   <Folder Name="/tests/">
