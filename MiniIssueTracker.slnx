@@ -2,4 +2,7 @@
   <Folder Name="/src/">
     <Project Path="src/MiniIssueTracker/MiniIssueTracker.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/MiniIssueTracker.Tests/MiniIssueTracker.Tests.csproj" />
+  </Folder>
 </Solution>
