@@ -105,4 +105,32 @@ public class IssueTrackerDbContextTests
 
         Assert.Null(storedIssue);
     }
+
+    [Fact]
+    public void SaveIssue_ShouldGenerateId()
+    {
+        DbContextOptions<IssueTrackerDbContext> options =
+            new DbContextOptionsBuilder<IssueTrackerDbContext>()
+                .UseSqlite("Data Source=:memory:")
+                .Options;
+
+        using IssueTrackerDbContext dbContext = new IssueTrackerDbContext(options);
+
+        dbContext.Database.OpenConnection();
+        dbContext.Database.EnsureCreated();
+
+        Issue issue = new Issue
+        {
+            Title = "Id test",
+            Description = "Controleer automatisch gegenereerd Id",
+            Type = IssueType.Bug
+        };
+
+        Assert.Equal(0, issue.Id);
+
+        dbContext.Issues.Add(issue);
+        dbContext.SaveChanges();
+
+        Assert.True(issue.Id > 0);
+    }
 }
