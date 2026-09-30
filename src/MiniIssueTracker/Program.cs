@@ -209,17 +209,19 @@ while (mainMenuChoice != "6")
                     Console.WriteLine("1. Prioriteit");
                     Console.WriteLine("2. Status");
                     Console.WriteLine("3. Type");
-                    Console.WriteLine("4. Terug");
+                    Console.WriteLine("4. Beschrijving");
+                    Console.WriteLine("5. Terug");
 
                     string? actionChoice = Console.ReadLine();
 
                     while (actionChoice != "1" &&
                         actionChoice != "2" &&
                         actionChoice != "3" &&
-                        actionChoice != "4")
+                        actionChoice != "4" &&
+                        actionChoice != "5")
                     {
                         Console.WriteLine("Geen geldige invoer");
-                        Console.WriteLine("Geef een geldige invoer: 1. Prioriteit, 2. Status, 3. Type, 4. Terug");
+                        Console.WriteLine("Geef een geldige invoer: 1. Prioriteit, 2. Status, 3. Type, 4. Beschrijving, 5. Terug");
                         actionChoice = Console.ReadLine();
                     }
 
@@ -241,6 +243,21 @@ while (mainMenuChoice != "6")
                             break;
 
                         case "4":
+                            Console.WriteLine("Geef de nieuwe beschrijving:");
+                            string? description = Console.ReadLine();
+
+                            while (string.IsNullOrWhiteSpace(description))
+                            {
+                                Console.WriteLine("Beschrijving is verplicht.");
+                                Console.WriteLine("Geef de nieuwe beschrijving:");
+                                description = Console.ReadLine();
+                            }
+
+                            selectedIssue.Description = description;
+                            dbContext.SaveChanges();
+                            break;
+                        
+                        case "5":
                             break;
                     }
                 }
