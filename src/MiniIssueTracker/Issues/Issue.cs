@@ -15,4 +15,14 @@ public class Issue
     public IssueStatus Status { get; set; } = IssueStatus.Open;
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public bool CanBeEdited()
+    {
+        return Status == IssueStatus.Open;
+    }
+
+    public bool CanBeDeleted()
+    {
+        return Status == IssueStatus.Open;
+    }
 }

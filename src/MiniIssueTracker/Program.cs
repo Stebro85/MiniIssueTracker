@@ -77,7 +77,7 @@ while (mainMenuChoice != "6")
                 }
                 else
                 {
-                    if (selectedIssue.Status != IssueStatus.Open)
+                    if (!selectedIssue.CanBeEdited())
                     {
                         Console.WriteLine("Dit issue kan niet meer bewerkt worden omdat het al in behandeling is.");
                     }
@@ -168,7 +168,7 @@ while (mainMenuChoice != "6")
                 }
                 else
                 {
-                    if (selectedIssue.Status != IssueStatus.Open)
+                    if (!selectedIssue.CanBeDeleted())
                     {
                         Console.WriteLine("Dit issue kan niet meer verwijderd worden omdat het al in behandeling is.");
                     }
