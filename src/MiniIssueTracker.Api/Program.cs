@@ -46,6 +46,21 @@ app.MapGet("/api/issues/{id}", (int id, IssueTrackerDbContext dbContext) =>
 
 app.MapPost("/api/issues", (CreateIssueDto createIssueDto, IssueTrackerDbContext dbContext) =>
 {
+    if (string.IsNullOrWhiteSpace(createIssueDto.Title))
+    {
+        return Results.BadRequest("Titel is verplicht.");
+    }
+
+    if (string.IsNullOrWhiteSpace(createIssueDto.Description))
+    {
+        return Results.BadRequest("Beschrijving is verplicht.");
+    }
+
+    if (!Enum.IsDefined(createIssueDto.Type))
+    {
+        return Results.BadRequest("Geen geldig issue type.");
+    }
+
     Issue newIssue = new Issue
     {
         Title = createIssueDto.Title,
@@ -73,6 +88,21 @@ app.MapPut("/api/issues/{id}", (int id, EditIssueDto editIssueDto, IssueTrackerD
         return Results.BadRequest("Dit issue kan niet meer bewerkt worden omdat het al in behandeling is.");
     }
 
+    if (string.IsNullOrWhiteSpace(editIssueDto.Title))
+    {
+        return Results.BadRequest("Titel is verplicht.");
+    }
+
+    if (string.IsNullOrWhiteSpace(editIssueDto.Description))
+    {
+        return Results.BadRequest("Beschrijving is verplicht.");
+    }
+
+    if (!Enum.IsDefined(editIssueDto.Type))
+    {
+        return Results.BadRequest("Geen geldig issue type.");
+    }
+
     issue.Title = editIssueDto.Title;
     issue.Description = editIssueDto.Description;
     issue.Type = editIssueDto.Type;
@@ -89,6 +119,26 @@ app.MapPut("/api/issues/{id}/handling", (int id, HandleIssueDto handleIssueDto, 
     if (issue is null)
     {
         return Results.NotFound();
+    }
+
+    if (string.IsNullOrWhiteSpace(handleIssueDto.Description))
+    {
+        return Results.BadRequest("Beschrijving is verplicht.");
+    }
+
+    if (!Enum.IsDefined(handleIssueDto.Type))
+    {
+        return Results.BadRequest("Geen geldig issue type.");
+    }
+
+    if (!Enum.IsDefined(handleIssueDto.Priority))
+    {
+        return Results.BadRequest("Geen geldige prioriteit.");
+    }
+
+    if (!Enum.IsDefined(handleIssueDto.Status))
+    {
+        return Results.BadRequest("Geen geldige status.");
     }
 
     issue.Description = handleIssueDto.Description;
