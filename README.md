@@ -18,10 +18,13 @@ The project is currently under active development. Features, structure, and docu
 - Update issue type, priority, and status
 - Validate user input
 - Find issues by their ID
+- Persist issues using a SQLite database
 
 ## Technologies
 
 - C#
 - .NET 10
 - .NET Console Application
+- Entity Framework Core
+- SQLite
 - Git and GitHub
