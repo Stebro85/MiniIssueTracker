@@ -29,6 +29,8 @@ public class IssueTrackerDbContextTests
         dbContext.Issues.Add(issue);
         dbContext.SaveChanges();
 
+        dbContext.ChangeTracker.Clear();
+
         Issue? storedIssue = dbContext.Issues.Find(issue.Id);
 
         Assert.NotNull(storedIssue);
@@ -60,6 +62,8 @@ public class IssueTrackerDbContextTests
 
         issue.Title = "Nieuwe titel";
         dbContext.SaveChanges();
+
+        dbContext.ChangeTracker.Clear();
 
         Issue? storedIssue = dbContext.Issues.Find(issue.Id);
 
@@ -94,6 +98,8 @@ public class IssueTrackerDbContextTests
 
         dbContext.Issues.Remove(issue);
         dbContext.SaveChanges();
+
+        dbContext.ChangeTracker.Clear();
 
         Issue? storedIssue = dbContext.Issues.Find(issueId);
 
