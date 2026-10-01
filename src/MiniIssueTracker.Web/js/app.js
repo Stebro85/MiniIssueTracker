@@ -12,6 +12,12 @@ const editIssueForm = document.getElementById("edit-issue-form");
 
 let editingIssueId = null;
 
+const handleSection = document.getElementById("handle-section");
+
+const handleIssueForm = document.getElementById("handle-issue-form");
+
+let handlingIssueId = null;
+
 createIssueForm.addEventListener("submit", event =>
 {
     event.preventDefault();
@@ -109,6 +115,65 @@ editIssueForm.addEventListener("submit", event =>
     });
 });
 
+handleIssueForm.addEventListener("submit", event =>
+{
+    event.preventDefault();
+
+    const description =
+        document.getElementById("handle-description").value;
+
+    const type =
+        document.getElementById("handle-type").value;
+
+    const priority =
+        document.getElementById("handle-priority").value;
+
+    const status = 
+        document.getElementById("handle-status").value;
+
+    const handleIssue =
+    {
+        description: description,
+        type: type,
+        priority: priority,
+        status: status
+    };
+
+    console.log(`Issue #${handlingIssueId} wordt behandeld.`);
+    console.log(handleIssue);
+
+    fetch(`http://localhost:5203/api/issues/${handlingIssueId}/handling`,
+    {
+        method: "PUT",
+        headers: 
+        {
+            "Content-Type": "application/json"
+        },
+        body:JSON.stringify(handleIssue)
+    })
+    .then(response =>
+    {
+        console.log(response);
+
+        if (response.ok)
+        {
+            return response.json();
+        }
+    })
+    .then(handledIssue =>
+    {
+        console.log(handledIssue);
+
+        const existingIssueItem =
+            document.getElementById(`issue-${handledIssue.id}`);
+
+        displayIssue(handledIssue, existingIssueItem);
+
+        handleSection.hidden = true;
+        handlingIssueId = null;
+    });
+});
+
 function displayIssue(issue, existingIssueItem = null)
 {
     const issueItem = document.createElement("div");
@@ -143,6 +208,21 @@ function displayIssue(issue, existingIssueItem = null)
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Verwijderen";
 
+    const handleButton = document.createElement("button");
+    handleButton.textContent = "Behandelen";
+
+    handleButton.addEventListener("click",() =>
+    {
+        handlingIssueId = issue.id;
+
+        handleSection.hidden = false;
+
+        document.getElementById("handle-description").value = issue.description;
+        document.getElementById("handle-type").value = issue.type;
+        document.getElementById("handle-priority").value = issue.priority;
+        document.getElementById("handle-status").value = issue.status;
+    });
+    
     deleteButton.addEventListener("click", () =>
     {
         fetch(`http://localhost:5203/api/issues/${issue.id}`,
@@ -186,6 +266,11 @@ function displayIssue(issue, existingIssueItem = null)
     {
         issueItem.appendChild(editButton);
         issueItem.appendChild(deleteButton);
+    }
+
+    if (issue.status !== "Done")
+    {
+        issueItem.appendChild(handleButton);
     }
 
     if (existingIssueItem)
