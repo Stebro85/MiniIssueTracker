@@ -2,10 +2,27 @@ using Microsoft.EntityFrameworkCore;
 using MiniIssueTracker.Data;
 using MiniIssueTracker.Issues;
 using MiniIssueTracker.Api.Dtos;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
+
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Frontend", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5500")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 string databasePath = Path.GetFullPath(
     Path.Combine(
@@ -19,6 +36,8 @@ builder.Services.AddDbContext<IssueTrackerDbContext>(options =>
     options.UseSqlite($"Data Source={databasePath}"));
 
 var app = builder.Build();
+
+app.UseCors("Frontend");
 
 if (app.Environment.IsDevelopment())
 {
