@@ -14,7 +14,7 @@ public class Issue
 
     public IssueStatus Status { get; set; } = IssueStatus.Open;
 
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
 
     public bool CanBeEdited()
     {
