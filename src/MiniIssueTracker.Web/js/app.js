@@ -140,6 +140,29 @@ function displayIssue(issue, existingIssueItem = null)
     const editButton = document.createElement("button");
     editButton.textContent = "Bewerken";
 
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Verwijderen";
+
+    deleteButton.addEventListener("click", () =>
+    {
+        fetch(`http://localhost:5203/api/issues/${issue.id}`,
+        {
+            method: "DELETE"
+        })
+        .then(response =>
+        {
+            console.log(response);
+
+            if (response.ok)
+            {
+                const issueItem =
+                    document.getElementById(`issue-${issue.id}`);
+
+                issueItem.remove();
+            }
+        });
+    });
+
     editButton.addEventListener("click", () =>
     {
         editingIssueId = issue.id;
@@ -162,6 +185,7 @@ function displayIssue(issue, existingIssueItem = null)
     if (issue.status === "Open")
     {
         issueItem.appendChild(editButton);
+        issueItem.appendChild(deleteButton);
     }
 
     if (existingIssueItem)
