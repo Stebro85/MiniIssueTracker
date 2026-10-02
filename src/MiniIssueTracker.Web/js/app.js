@@ -1,22 +1,27 @@
-console.log ("Mini Issue Tracker JavaScript geladen.")
+console.log ("Mini Issue Tracker JavaScript geladen.");
 
 const issueList = document.getElementById("issue-list");
 
 console.log(issueList);
 
 const createIssueForm = document.getElementById("create-issue-form");
+const roleSelect = document.getElementById("role");
+const createSection = document.getElementById("create-section");
+
+console.log(roleSelect);
 
 const editSection = document.getElementById("edit-section");
-
 const editIssueForm = document.getElementById("edit-issue-form");
-
-let editingIssueId = null;
-
 const handleSection = document.getElementById("handle-section");
-
 const handleIssueForm = document.getElementById("handle-issue-form");
 
+let editingIssueId = null;
 let handlingIssueId = null;
+let issues = [];
+
+roleSelect.addEventListener("change", updateRoleView);
+
+updateRoleView() ; 
 
 createIssueForm.addEventListener("submit", event =>
 {
@@ -58,6 +63,8 @@ createIssueForm.addEventListener("submit", event =>
     .then(createdIssue =>
     {
         console.log(createdIssue);
+
+        issues.push(createdIssue);
 
         displayIssue(createdIssue);
     });
@@ -102,6 +109,11 @@ editIssueForm.addEventListener("submit", event =>
     .then(updatedIssue =>
     {
         console.log(updatedIssue);
+
+        const issueIndex =
+            issues.findIndex(issue => issue.id === updatedIssue.id);
+        
+            issues[issueIndex] = updatedIssue;
 
         const existingIssueItem =
             document.getElementById(`issue-${updatedIssue.id}`);
@@ -164,6 +176,11 @@ handleIssueForm.addEventListener("submit", event =>
     {
         console.log(handledIssue);
 
+        const issueIndex = 
+            issues.findIndex(issue => issue.id === handledIssue.id);
+               
+        issues[issueIndex] = handledIssue;
+
         const existingIssueItem =
             document.getElementById(`issue-${handledIssue.id}`);
 
@@ -173,6 +190,38 @@ handleIssueForm.addEventListener("submit", event =>
         handlingIssueId = null;
     });
 });
+
+function updateRoleView()
+{
+    console.log(`Gekozen rol: ${roleSelect.value}`);
+
+    if (roleSelect.value === "Reporter")
+    {
+        createSection.hidden = false;
+    }
+    else
+    {
+        createSection.hidden = true;
+    }
+
+    editSection.hidden = true;
+    editingIssueId = null;
+
+    handleSection.hidden = true;
+    handlingIssueId = null;
+
+    displayIssues();
+}
+
+function displayIssues()
+{
+    issueList.innerHTML = "";
+
+    issues.forEach(issue =>
+    {
+        displayIssue(issue);
+    });
+}
 
 function displayIssue(issue, existingIssueItem = null)
 {
@@ -237,6 +286,8 @@ function displayIssue(issue, existingIssueItem = null)
             {
                 const issueItem =
                     document.getElementById(`issue-${issue.id}`);
+                
+                issues = issues.filter(existingIssue => existingIssue.id !== issue.id);
 
                 issueItem.remove();
             }
@@ -262,13 +313,13 @@ function displayIssue(issue, existingIssueItem = null)
     issueItem.appendChild(issueStatus);
     issueItem.appendChild(issueCreatedAt);
 
-    if (issue.status === "Open")
+    if (roleSelect.value === "Reporter" && issue.status === "Open")
     {
         issueItem.appendChild(editButton);
         issueItem.appendChild(deleteButton);
     }
 
-    if (issue.status !== "Done")
+    if (roleSelect.value === "Handler" && issue.status !== "Done")
     {
         issueItem.appendChild(handleButton);
     }
@@ -285,12 +336,11 @@ function displayIssue(issue, existingIssueItem = null)
 
 fetch("http://localhost:5203/api/issues")
     .then(response => response.json())
-    .then(issues => 
+    .then(loadedIssues => 
     {
-        console.log(issues);
+        console.log(loadedIssues);
+        
+        issues = loadedIssues;
 
-        issues.forEach(issue =>
-        {
-            displayIssue(issue);
-        });
+        displayIssues();
     });
