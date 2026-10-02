@@ -1,19 +1,23 @@
 console.log ("Mini Issue Tracker JavaScript geladen.");
 
 const issueList = document.getElementById("issue-list");
+const issueError = document.getElementById("issue-error");
 
 console.log(issueList);
 
 const createIssueForm = document.getElementById("create-issue-form");
 const roleSelect = document.getElementById("role");
 const createSection = document.getElementById("create-section");
+const createError = document.getElementById("create-error");
 
 console.log(roleSelect);
 
 const editSection = document.getElementById("edit-section");
 const editIssueForm = document.getElementById("edit-issue-form");
+const editError = document.getElementById("edit-error");
 const handleSection = document.getElementById("handle-section");
 const handleIssueForm = document.getElementById("handle-issue-form");
+const handleError = document.getElementById("handle-error");
 
 let editingIssueId = null;
 let handlingIssueId = null;
@@ -26,6 +30,9 @@ updateRoleView() ;
 createIssueForm.addEventListener("submit", event =>
 {
     event.preventDefault();
+
+    createError.hidden = true;
+    createError.textContent = "";
 
     const title = document.getElementById("title").value;
     const description =  document.getElementById("description").value;
@@ -59,6 +66,10 @@ createIssueForm.addEventListener("submit", event =>
 
             return response.json()
         }
+        else
+        {
+            throw new Error("Issue kon niet worden aangemaakt.");
+        }
     })
     .then(createdIssue =>
     {
@@ -67,6 +78,13 @@ createIssueForm.addEventListener("submit", event =>
         issues.push(createdIssue);
 
         displayIssue(createdIssue);
+    })
+    .catch(error =>
+    {
+        console.error(error);
+
+        createError.textContent = error.message;
+        createError.hidden = false;
     });
 });
 
@@ -74,6 +92,9 @@ editIssueForm.addEventListener("submit", event =>
 {
     event.preventDefault();
 
+    editError.hidden =true;
+    editError.textContent = "";
+    
     const title = document.getElementById("edit-title").value;
     const description = document.getElementById("edit-description").value;
     const type = document.getElementById("edit-type").value;
@@ -105,6 +126,10 @@ editIssueForm.addEventListener("submit", event =>
         {
             return response.json();
         }
+        else
+        {
+            throw new Error("Issue kon niet worden bijgewerkt.");
+        }
     })
     .then(updatedIssue =>
     {
@@ -124,12 +149,22 @@ editIssueForm.addEventListener("submit", event =>
 
         editSection.hidden = true;
         editingIssueId = null;
+    })
+    .catch(error =>
+    {
+        console.error(error);
+
+        editError.textContent = error.message;
+        editError.hidden = false;
     });
 });
 
 handleIssueForm.addEventListener("submit", event =>
 {
     event.preventDefault();
+
+    handleError.hidden = true;
+    handleError.textContent = "";
 
     const description =
         document.getElementById("handle-description").value;
@@ -171,6 +206,10 @@ handleIssueForm.addEventListener("submit", event =>
         {
             return response.json();
         }
+        else
+        {
+            throw new Error("Issue kon niet worden behandeld.");
+        }
     })
     .then(handledIssue =>
     {
@@ -188,6 +227,13 @@ handleIssueForm.addEventListener("submit", event =>
 
         handleSection.hidden = true;
         handlingIssueId = null;
+    })
+    .catch(error =>
+    {
+        console.error(error);
+
+        handleError.textContent = error.message;
+        handleError.hidden = false;
     });
 });
 
@@ -284,6 +330,9 @@ function displayIssue(issue, existingIssueItem = null)
 
             if (response.ok)
             {
+                issueError.hidden = true;
+                issueError.textContent = "";
+
                 const issueItem =
                     document.getElementById(`issue-${issue.id}`);
                 
@@ -291,6 +340,19 @@ function displayIssue(issue, existingIssueItem = null)
 
                 issueItem.remove();
             }
+            else
+            {
+                throw new Error("Issue kan niet worden verwijderd.");
+            }
+        })
+        .catch(error =>
+        {
+            console.error(error);
+
+            issueError.textContent = error.message;
+            issueError.hidden = false;
+
+            loadIssues();
         });
     });
 
@@ -334,13 +396,38 @@ function displayIssue(issue, existingIssueItem = null)
     }
 }
 
-fetch("http://localhost:5203/api/issues")
-    .then(response => response.json())
-    .then(loadedIssues => 
-    {
-        console.log(loadedIssues);
-        
-        issues = loadedIssues;
+function loadIssues()
+{
+    fetch("http://localhost:5203/api/issues")
+        .then(response => 
+        {
+            if (response.ok)
+            {
+                return response.json();
+            }
+            else
+            {
+                throw new Error("Issues konden niet worden geladen.");
+            }
+        })
+        .then(loadedIssues => 
+        {
+            console.log(loadedIssues);
 
-        displayIssues();
-    });
+            issueError.hidden = true;
+            issueError.textContent = "";
+            
+            issues = loadedIssues;
+
+            displayIssues();
+        })
+        .catch(error =>
+        {
+            console.error(error);
+
+            issueError.textContent = "Issues konden niet worden geladen."
+            issueError.hidden = false;
+        });
+}
+
+loadIssues();

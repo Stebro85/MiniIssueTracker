@@ -31,8 +31,9 @@
                 </select>
 
                 <button type="submit">Issue aanmaken</button>
-                
             </form>
+
+            <p id="create-error" hidden></p>
         </section>
 
         <section id="edit-section" hidden>
@@ -54,6 +55,8 @@
 
                 <button type="submit">Wijzigingen opslaan</button>
             </form>
+
+            <p id="edit-error" hidden></p>
         </section>
 
         <section id="handle-section" hidden>
@@ -86,8 +89,11 @@
 
                 <button type="submit">Behandeling opslaan</button>
             </form>
+
+            <p id="handle-error" hidden></p>
         </section>
 
+        <div id="issue-error" hidden></div>
         <div id="issue-list"></div>
 
         <script src="js/app.js"></script>
