@@ -191,3 +191,5 @@ app.MapDelete("/api/issues/{id}", (int id, IssueTrackerDbContext dbContext) =>
 });
 
 app.Run();
+
+public partial class Program {}
