@@ -44,8 +44,6 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
-
 app.MapGet("/api/issues", (IssueTrackerDbContext dbContext) =>
 {
     return dbContext.Issues.ToList();
@@ -167,7 +165,7 @@ app.MapPut("/api/issues/{id}/handling", (int id, HandleIssueDto handleIssueDto, 
 
     dbContext.SaveChanges();
 
-    return Results.Ok (issue);
+    return Results.Ok(issue);
 });
 
 app.MapDelete("/api/issues/{id}", (int id, IssueTrackerDbContext dbContext) =>

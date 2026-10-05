@@ -1,16 +1,11 @@
-console.log ("Mini Issue Tracker JavaScript geladen.");
-
 const issueList = document.getElementById("issue-list");
 const issueError = document.getElementById("issue-error");
 
-console.log(issueList);
 
 const createIssueForm = document.getElementById("create-issue-form");
 const roleSelect = document.getElementById("role");
 const createSection = document.getElementById("create-section");
 const createError = document.getElementById("create-error");
-
-console.log(roleSelect);
 
 const editSection = document.getElementById("edit-section");
 const editIssueForm = document.getElementById("edit-issue-form");
@@ -45,8 +40,6 @@ createIssueForm.addEventListener("submit", event =>
         type: type
     };
 
-    console.log(newIssue);
-
     fetch ("http://localhost:5203/api/issues",
     {
         method: "POST",
@@ -58,8 +51,6 @@ createIssueForm.addEventListener("submit", event =>
     })
     .then(response =>
     {
-        console.log(response);
-
         if (response.ok)
         {
             createIssueForm.reset();
@@ -73,8 +64,6 @@ createIssueForm.addEventListener("submit", event =>
     })
     .then(createdIssue =>
     {
-        console.log(createdIssue);
-
         issues.push(createdIssue);
 
         displayIssue(createdIssue);
@@ -105,9 +94,6 @@ editIssueForm.addEventListener("submit", event =>
         description: description,
         type: type
     };
-    
-    console.log(`Issue #${editingIssueId} wordt opgeslagen.`);
-    console.log(editedIssue);
 
     fetch(`http://localhost:5203/api/issues/${editingIssueId}`,
     {
@@ -120,8 +106,6 @@ editIssueForm.addEventListener("submit", event =>
     })
     .then(response =>
     {
-        console.log(response);
-
         if (response.ok)
         {
             return response.json();
@@ -133,8 +117,6 @@ editIssueForm.addEventListener("submit", event =>
     })
     .then(updatedIssue =>
     {
-        console.log(updatedIssue);
-
         const issueIndex =
             issues.findIndex(issue => issue.id === updatedIssue.id);
         
@@ -142,8 +124,6 @@ editIssueForm.addEventListener("submit", event =>
 
         const existingIssueItem =
             document.getElementById(`issue-${updatedIssue.id}`);
-        
-        console.log(existingIssueItem);
 
         displayIssue(updatedIssue, existingIssueItem);
 
@@ -186,9 +166,6 @@ handleIssueForm.addEventListener("submit", event =>
         status: status
     };
 
-    console.log(`Issue #${handlingIssueId} wordt behandeld.`);
-    console.log(handleIssue);
-
     fetch(`http://localhost:5203/api/issues/${handlingIssueId}/handling`,
     {
         method: "PUT",
@@ -200,8 +177,6 @@ handleIssueForm.addEventListener("submit", event =>
     })
     .then(response =>
     {
-        console.log(response);
-
         if (response.ok)
         {
             return response.json();
@@ -213,8 +188,6 @@ handleIssueForm.addEventListener("submit", event =>
     })
     .then(handledIssue =>
     {
-        console.log(handledIssue);
-
         const issueIndex = 
             issues.findIndex(issue => issue.id === handledIssue.id);
                
@@ -239,8 +212,6 @@ handleIssueForm.addEventListener("submit", event =>
 
 function updateRoleView()
 {
-    console.log(`Gekozen rol: ${roleSelect.value}`);
-
     if (roleSelect.value === "Reporter")
     {
         createSection.hidden = false;
@@ -365,8 +336,6 @@ function displayIssue(issue, existingIssueItem = null)
         })
         .then(response =>
         {
-            console.log(response);
-
             if (response.ok)
             {
                 issueError.hidden = true;
@@ -456,8 +425,6 @@ function loadIssues()
         })
         .then(loadedIssues => 
         {
-            console.log(loadedIssues);
-
             issueError.hidden = true;
             issueError.textContent = "";
             
