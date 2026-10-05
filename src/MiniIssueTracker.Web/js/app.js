@@ -263,6 +263,12 @@ function displayIssues()
 {
     issueList.innerHTML = "";
 
+    if (issues.length === 0)
+    {
+        issueList.textContent = "Er zijn nog geen issues.";
+        return;
+    }
+
     issues.forEach(issue =>
     {
         displayIssue(issue);
@@ -273,35 +279,68 @@ function displayIssue(issue, existingIssueItem = null)
 {
     const issueItem = document.createElement("div");
     issueItem.id = `issue-${issue.id}`;
+    issueItem.classList.add("issue-card");
 
     const issueId = document.createElement("p");
     issueId.textContent = `Issue #${issue.id}`;
 
     const issueTitle = document.createElement("p");
     issueTitle.textContent = issue.title;
+    issueTitle.classList.add("issue-title");
 
     const issueDescription = document.createElement("p");
     issueDescription.textContent = issue.description;
 
     const issueType = document.createElement("p");
     issueType.textContent = `Type: ${issue.type}`;
+    issueType.classList.add("issue-meta");
 
     const issuePriority = document.createElement("p");
     issuePriority.textContent = `Prioriteit: ${issue.priority}`;
+    issuePriority.classList.add("issue-meta");
+
+    if (issue.priority === "Low")
+    {
+        issuePriority.classList.add("priority-low");
+    }
+    else if (issue.priority === "Medium")
+    {
+        issuePriority.classList.add("priority-medium");
+    }
+    else if (issue.priority === "High")
+    {
+        issuePriority.classList.add("priority-high");
+    }
 
     const issueStatus = document.createElement("p");
     issueStatus.textContent = `Status: ${issue.status}`;
+    issueStatus.classList.add("issue-meta");
+
+    if (issue.status === "Open")
+    {
+        issueStatus.classList.add("status-open");
+    }
+    else if (issue.status === "InProgress")
+    {
+        issueStatus.classList.add("status-in-progress");
+    }
+    else if (issue.status === "Done")
+    {
+        issueStatus.classList.add("status-done");
+    }
 
     const createdAt = new Date(issue.createdAt);
 
     const issueCreatedAt = document.createElement("p");
     issueCreatedAt.textContent = `Aangemaakt: ${createdAt.toLocaleString("nl-BE")}`;
+    issueCreatedAt.classList.add("issue-date");
 
     const editButton = document.createElement("button");
     editButton.textContent = "Bewerken";
 
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Verwijderen";
+    deleteButton.classList.add("delete-button");
 
     const handleButton = document.createElement("button");
     handleButton.textContent = "Behandelen";
@@ -375,16 +414,21 @@ function displayIssue(issue, existingIssueItem = null)
     issueItem.appendChild(issueStatus);
     issueItem.appendChild(issueCreatedAt);
 
+    const issueActions = document.createElement("div");
+    issueActions.classList.add("issue-actions");
+
     if (roleSelect.value === "Reporter" && issue.status === "Open")
     {
-        issueItem.appendChild(editButton);
-        issueItem.appendChild(deleteButton);
+        issueActions.appendChild(editButton);
+        issueActions.appendChild(deleteButton);
     }
 
     if (roleSelect.value === "Handler" && issue.status !== "Done")
     {
-        issueItem.appendChild(handleButton);
+        issueActions.appendChild(handleButton);
     }
+
+    issueItem.appendChild(issueActions);
 
     if (existingIssueItem)
     {

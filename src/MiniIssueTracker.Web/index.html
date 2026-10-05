@@ -3,98 +3,117 @@
     <head>
         <meta charset="UTF-8">
         <Title>Mini Issue Tracker</Title>
+        <link rel="stylesheet" href="CSS/styles.css">
     </head>
     <body>
-        <h1>Mini Issue Tracker</h1>
+        <div class="container">
+            <header class="app-header">
+                <h1>Mini Issue Tracker</h1>
 
-        <label for="role">Rol</label>
-        <select id="role">
-            <option value="Reporter">Melder</option>
-            <option value="Handler">Behandelaar</option>
-        </select>
-        
-        <section id="create-section">
-            <h2>Nieuwe issue</h2>
+                <div class="role-selector">
+                    <label for="role">Rol</label>
+                    <select id="role">
+                        <option value="Reporter">Melder</option>
+                        <option value="Handler">Behandelaar</option>
+                    </select>
+                </div>
+            </header>
 
-            <form id="create-issue-form">
-                <label for="title">Titel</label>
-                <input type="text" id="title">
+            <div class="app-layout">
 
-                <label for="description">Beschrijving</label>
-                <textarea id="description"></textarea>
+                <aside class="sidebar">
+                    <h2 class="sidebar-title">Issues</h2>
+                    
+                    <div id="issue-error" hidden></div>
+                    <div id="issue-list"></div>
+                </aside>
 
-                <label for="type">Type</label>
-                <select id="type">
-                    <option value="Bug">Bug</option>
-                    <option value="Feature">Feature</option>
-                    <option value="Task">Task</option> 
-                </select>
+                <main class="main-content">
+                    <section id="create-section">
+                        <h2>Nieuwe issue</h2>
 
-                <button type="submit">Issue aanmaken</button>
-            </form>
+                        <form id="create-issue-form">
+                            <label for="title">Titel</label>
+                            <input type="text" id="title">
 
-            <p id="create-error" hidden></p>
-        </section>
+                            <label for="description">Beschrijving</label>
+                            <textarea id="description"></textarea>
 
-        <section id="edit-section" hidden>
-            <h2>Issue bewerken</h2>
+                            <label for="type">Type</label>
+                            <select id="type">
+                                <option value="Bug">Bug</option>
+                                <option value="Feature">Feature</option>
+                                <option value="Task">Task</option> 
+                            </select>
 
-            <form id="edit-issue-form">
-                <label for="edit-title">Titel</label>
-                <input type="text" id="edit-title">
+                            <button type="submit">Issue aanmaken</button>
+                        </form>
 
-                <label for="edit-description">Beschrijving</label>
-                <Textarea id="edit-description"></Textarea>
+                        <p id="create-error" hidden></p>
+                    </section>
 
-                <label for="edit-type">Type</label>
-                <select id="edit-type">
-                    <option value="Bug">Bug</option>
-                    <option value="Feature">Feature</option>
-                    <option value="Task">Task</option>
-                </select>
+                    <section id="edit-section" hidden>
+                        <h2>Issue bewerken</h2>
 
-                <button type="submit">Wijzigingen opslaan</button>
-            </form>
+                        <form id="edit-issue-form">
+                            <label for="edit-title">Titel</label>
+                            <input type="text" id="edit-title">
 
-            <p id="edit-error" hidden></p>
-        </section>
+                            <label for="edit-description">Beschrijving</label>
+                            <Textarea id="edit-description"></Textarea>
 
-        <section id="handle-section" hidden>
-            <h2> Issue behandelen</h2>
+                            <label for="edit-type">Type</label>
+                            <select id="edit-type">
+                                <option value="Bug">Bug</option>
+                                <option value="Feature">Feature</option>
+                                <option value="Task">Task</option>
+                            </select>
 
-            <form id="handle-issue-form">
-                <label for="handle-description">Beschrijving</label>
-                <textarea id="handle-description"></textarea>
+                            <button type="submit">Wijzigingen opslaan</button>
+                        </form>
 
-                <label for="handle-type">Type</label>
-                <select id="handle-type">
-                    <option value="Bug">Bug</option>
-                    <option value="Feature">Feature</option>
-                    <option value="Task">Task</option>
-                </select>
+                        <p id="edit-error" hidden></p>
+                    </section>
 
-                <label for="handle-priority">Prioriteit</label>
-                <select id="handle-priority">
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
-                </select>
+                    <section id="handle-section" hidden>
+                        <h2> Issue behandelen</h2>
 
-                <Label for="handle-status">Status</Label>
-                <select id="handle-status">
-                    <option value="Open">Open</option>
-                    <option value="InProgress">InProgress</option>
-                    <option value="Done">Done</option>
-                </select>
+                        <form id="handle-issue-form">
+                            <label for="handle-description">Beschrijving</label>
+                            <textarea id="handle-description"></textarea>
 
-                <button type="submit">Behandeling opslaan</button>
-            </form>
+                            <label for="handle-type">Type</label>
+                            <select id="handle-type">
+                                <option value="Bug">Bug</option>
+                                <option value="Feature">Feature</option>
+                                <option value="Task">Task</option>
+                            </select>
 
-            <p id="handle-error" hidden></p>
-        </section>
+                            <label for="handle-priority">Prioriteit</label>
+                            <select id="handle-priority">
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                            </select>
 
-        <div id="issue-error" hidden></div>
-        <div id="issue-list"></div>
+                            <Label for="handle-status">Status</Label>
+                            <select id="handle-status">
+                                <option value="Open">Open</option>
+                                <option value="InProgress">InProgress</option>
+                                <option value="Done">Done</option>
+                            </select>
+
+                            <button type="submit">Behandeling opslaan</button>
+                        </form>
+
+                        <p id="handle-error" hidden></p>
+                    </section>
+
+                </main>
+
+            </div>
+            
+        </div>
 
         <script src="js/app.js"></script>
     </body>
